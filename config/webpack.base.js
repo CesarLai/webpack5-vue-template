@@ -4,11 +4,40 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/dist/plugin').default
+const { VueLoaderPlugin } = require('vue-loader/dist')
 
 const CONTEXT_PATH = path.resolve(__dirname, '../')
 const ENTRY_PATH = path.resolve(CONTEXT_PATH, 'src')
 const isProd = process.env.NODE_ENV === 'production'
+
+const cssLoaderConfig = {
+  loader: 'css-loader',
+  options: {
+    modules: {
+      mode: 'local',
+      // .vue should open CSS Modules
+      // .css or .less open CSS Modules when extension include '.module' prefix
+      auto: /(\.module\.(css|less)|.vue)$/,
+      exportGlobals: true,
+      localIdentName: '[path][name]__[local]--[hash:base64:5]',
+      localIdentContext: ENTRY_PATH,
+      localIdentHashSalt: 'cesarlai',
+      exportLocalsConvention: 'camelCase',
+      exportOnlyLocals: false
+    }
+  }
+}
+
+const lessLoaderConfig = {
+  loader: 'less-loader',
+  options: {
+    lessOptions: {
+      javascriptEnabled: true
+    }
+  }
+}
+
+const miniCssLoaderConfig = MiniCssExtractPlugin.loader
 
 module.exports = {
   context: CONTEXT_PATH,
@@ -16,7 +45,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(jsx?|tsx?)$/,
+        test: /\.[tj]s$/,
         include: ENTRY_PATH,
         exclude: path.resolve(CONTEXT_PATH, 'node_modules'),
         loader: 'babel-loader'
@@ -27,36 +56,19 @@ module.exports = {
         exclude: path.resolve(CONTEXT_PATH, 'node_modules'),
         loader: 'vue-loader',
         options: {
-          reactivityTransform: true
+          hotReload: true
         }
       },
+      // common css
       {
         test: /\.(css|less)$/,
         include: ENTRY_PATH,
         exclude: path.resolve(CONTEXT_PATH, 'node_modules'),
         use: [
-          {
-            loader: isProd ? MiniCssExtractPlugin.loader : 'style-loader'
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                mode: 'local',
-                auto: true,
-                exportGlobals: true,
-                localIdentName: '[path][name]__[local]--[hash:base64:5]',
-                localIdentContext: ENTRY_PATH,
-                localIdentHashSalt: 'cesarlai',
-                exportLocalsConvention: 'camelCaseOnly',
-                exportOnlyLocals: false
-              }
-            }
-          },
-          {
-            loader: 'less-loader'
-          }
-        ]
+          isProd ? miniCssLoaderConfig : 'vue-style-loader',
+          cssLoaderConfig,
+          lessLoaderConfig
+        ].filter(Boolean)
       },
       {
         test: /\.(svg|woff2?|ttf|eot|jpe?g|png|gif)(\?.*)?$/i,
@@ -87,7 +99,7 @@ module.exports = {
     }),
     new TsconfigPathsPlugin({
       configFile: path.resolve(CONTEXT_PATH, 'tsconfig.json')
-    }),
+    })
   ],
   resolve: {
     alias: {

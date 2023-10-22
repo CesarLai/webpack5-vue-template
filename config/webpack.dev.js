@@ -12,7 +12,7 @@ const CONFIG_ENV = 'development'
 
 module.exports = merge(baseConfig, {
   mode: CONFIG_ENV,
-  entry: './src/App.vue',
+  entry: './src/main',
   output: {
     path: OUTPUT_PATH,
     filename: '[name].bundle.js'
@@ -39,11 +39,12 @@ module.exports = merge(baseConfig, {
   devServer: {
     compress: true,
     port: 3000,
-    open: true,
+    open: false,
     // historyApiFallback: true
     historyApiFallback: {
       rewrites: [{ from: /.*/, to: '/index.html' }]
-    }
+    },
+    hot: true
   },
   optimization: {
     moduleIds: 'named'
