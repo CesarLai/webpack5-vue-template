@@ -11,7 +11,8 @@
     "build": "webpack --config ./config/webpack.prod.js"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "7.23.1",
+    "@babel/runtime": "7.17.8",
+    "core-js": "3.6.5",
     "vue": "3.3.2",
     "vue-router": "4.2.0"
   },

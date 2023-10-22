@@ -1,3 +1,4 @@
+import 'core-js/stage'
 import { createApp } from 'vue'
 
 import App from './App.vue'

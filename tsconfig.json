@@ -9,12 +9,7 @@
     "noImplicitAny": true,
     "resolveJsonModule": true,
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es6",
-      "es2020"
-    ],
+    "lib": ["dom", "dom.iterable", "es6", "es2020", "es2021"],
     "allowJs": false,
     "esModuleInterop": true,
     "importHelpers": true,
@@ -22,26 +17,19 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "types": [
-      "node",
-      "webpack-env"
-    ],
+    "types": ["node", "webpack-env"],
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "isolatedModules": true
   },
   "include": [
-    "global.d.ts",
+    "*.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "test/**/*.ts",
     "test/**/*.tsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
