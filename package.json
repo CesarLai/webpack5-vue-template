@@ -1,6 +1,6 @@
 {
   "name": "@cesarlai/webpack5-vue-template",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "index.js",
   "repository": "git@github.com:CesarLai/webpack5-vue-template.git",
   "author": "Cesar Lai <git@cesarlai.com>",
