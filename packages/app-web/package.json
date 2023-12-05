@@ -1,0 +1,24 @@
+{
+  "name": "@cesarlai/app-web",
+  "version": "0.1.1",
+  "main": "index.js",
+  "repository": "git@github.com:CesarLai/webpack5-vue-template.git",
+  "author": "Cesar Lai <git@cesarlai.com>",
+  "description": "基于 webpack 5 实现的 Vue App 模板。",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vision dev",
+    "build": "vision build",
+    "start": "vision start"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.17.8",
+    "core-js": "3.6.5",
+    "vue": "3.3.2",
+    "vue-router": "4.2.0"
+  },
+  "devDependencies": {
+    "cross-env": "7.0.3",
+    "@cesarlai/lib-framework": "*"
+  }
+}

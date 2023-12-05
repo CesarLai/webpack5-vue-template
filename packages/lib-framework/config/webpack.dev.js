@@ -4,15 +4,15 @@ const webpack = require('webpack')
 const { merge } = require('webpack-merge')
 const Dotenv = require('dotenv-webpack')
 
+const { PROJECT_ROOT } = require('../constants')
 const baseConfig = require('./webpack.base')
 
-const CONTEXT_PATH = path.resolve(__dirname, '../')
-const OUTPUT_PATH = path.resolve(CONTEXT_PATH, 'dist')
+const OUTPUT_PATH = path.resolve(PROJECT_ROOT, 'dist')
 const CONFIG_ENV = 'development'
 
 module.exports = merge(baseConfig, {
   mode: CONFIG_ENV,
-  entry: './src/main',
+  entry: path.resolve(PROJECT_ROOT, 'src/main'),
   output: {
     path: OUTPUT_PATH,
     filename: '[name].bundle.js'
@@ -25,12 +25,12 @@ module.exports = merge(baseConfig, {
       ignoreOrder: false
     }),
     new Dotenv({
-      path: path.resolve(CONTEXT_PATH, '.env'),
+      path: path.resolve(PROJECT_ROOT, '.env'),
       // webpack 5 should skip stub
       ignoreStub: true
     }),
     new Dotenv({
-      path: path.resolve(CONTEXT_PATH, `.env.${CONFIG_ENV}`),
+      path: path.resolve(PROJECT_ROOT, `.env.${CONFIG_ENV}`),
       // webpack 5 should skip stub
       ignoreStub: true
     })

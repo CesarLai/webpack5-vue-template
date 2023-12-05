@@ -3,12 +3,13 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader/dist')
-
-const CONTEXT_PATH = path.resolve(__dirname, '../')
-const ENTRY_PATH = path.resolve(CONTEXT_PATH, 'src')
-const isProd = process.env.NODE_ENV === 'production'
+const {
+  PROJECT_ROOT,
+  CONTEXT_PATH,
+  ENTRY_PATH,
+  isProd
+} = require('../constants')
 
 const cssLoaderConfig = {
   loader: 'css-loader',
@@ -39,6 +40,8 @@ const lessLoaderConfig = {
 
 const miniCssLoaderConfig = MiniCssExtractPlugin.loader
 
+console.log('PROJECT_ROOT', PROJECT_ROOT)
+
 module.exports = {
   context: CONTEXT_PATH,
   target: 'web',
@@ -47,13 +50,13 @@ module.exports = {
       {
         test: /\.[tj]s$/,
         include: ENTRY_PATH,
-        exclude: path.resolve(CONTEXT_PATH, 'node_modules'),
+        exclude: path.resolve(PROJECT_ROOT, 'node_modules'),
         loader: 'babel-loader'
       },
       {
         test: /\.vue$/,
         include: ENTRY_PATH,
-        exclude: path.resolve(CONTEXT_PATH, 'node_modules'),
+        exclude: path.resolve(PROJECT_ROOT, 'node_modules'),
         loader: 'vue-loader',
         options: {
           hotReload: true
@@ -63,7 +66,7 @@ module.exports = {
       {
         test: /\.(css|less)$/,
         include: ENTRY_PATH,
-        exclude: path.resolve(CONTEXT_PATH, 'node_modules'),
+        exclude: path.resolve(PROJECT_ROOT, 'node_modules'),
         use: [
           isProd ? miniCssLoaderConfig : 'vue-style-loader',
           cssLoaderConfig,
@@ -73,7 +76,7 @@ module.exports = {
       {
         test: /\.(svg|woff2?|ttf|eot|jpe?g|png|gif)(\?.*)?$/i,
         include: ENTRY_PATH,
-        exclude: path.resolve(CONTEXT_PATH, 'node_modules'),
+        exclude: path.resolve(PROJECT_ROOT, 'node_modules'),
         use: {
           loader: 'url-loader',
           options: {
@@ -92,13 +95,12 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'public/index.html'
+      template: path.resolve(PROJECT_ROOT, 'public/index.html')
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: 'public/vite.svg', to: './' }]
-    }),
-    new TsconfigPathsPlugin({
-      configFile: path.resolve(CONTEXT_PATH, 'tsconfig.json')
+      patterns: [
+        { from: path.resolve(PROJECT_ROOT, 'public/vite.svg'), to: './' }
+      ]
     })
   ],
   resolve: {
@@ -106,7 +108,7 @@ module.exports = {
       '@': ENTRY_PATH
     },
     modules: [ENTRY_PATH, 'node_modules'],
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.vue'],
+    extensions: ['.js', '.jsx', '.vue'],
     fallback: {
       path: require.resolve('path-browserify'),
       stream: require.resolve('stream-browserify'),
