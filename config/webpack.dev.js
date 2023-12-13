@@ -1,6 +1,5 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const webpack = require('webpack')
 const { merge } = require('webpack-merge')
 const Dotenv = require('dotenv-webpack')
 
@@ -18,7 +17,6 @@ module.exports = merge(baseConfig, {
     filename: '[name].bundle.js'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash:8].css',
       chunkFilename: '[id].[contenthash:8].css',
@@ -37,6 +35,7 @@ module.exports = merge(baseConfig, {
   ],
   devtool: 'inline-source-map',
   devServer: {
+    hot: true,
     compress: true,
     port: 3000,
     open: false,
